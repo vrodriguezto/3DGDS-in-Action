@@ -1,25 +1,11 @@
-#!/usr/bin/env python3
 import glob
-import json
 import logging
 import os
-import re
-import shutil
 import subprocess
-import typing
-import argparse
 import logging
-import sys
 import cairosvg  # type: ignore
 import gdstk  # type: ignore
-import yaml
-#from git.repo import Repo
-#import git_utils
-#from cells import Cell, load_cells
-#from markdown_utils import limit_markdown_headings
 CELL_URL = "https://skywater-pdk.readthedocs.io/en/main/contents/libraries/sky130_fd_sc_hd/cells/"
-#with open(os.path.join(os.path.dirname(__file__), "tile_sizes.yaml"), "r") as stream:
-#    tile_sizes = yaml.safe_load(stream)
 
 # Read and return top-level GDS data from the final GDS file, using gdstk:
 def get_final_gds_top_cells():
