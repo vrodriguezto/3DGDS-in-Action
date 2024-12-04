@@ -101,16 +101,36 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: gds_render_png
-        path: 'gds_render.png'
+        path: './build/gds_render.png'
 
     - name: Download gds_render (gtlf) artifact
       uses: actions/download-artifact@v4
       with:
         name: gds_render_gtlf
-        path: 'render.gds.gltf'
+        path: './build/render.gds.gltf'
+
+    - name: Generate HTML pages that redirects to viewer
+      shell: bash
+      run: |
+        cat << EOF >> build/index.html
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Redirecting to GDS Viewer...</title>
+          </head>
+          <body>
+            <script>
+              location.href = "https://gds-viewer.tinytapeout.com/?model=" + encodeURIComponent(location.href + '/render.gds.gltf');
+            </script>
+          </body>
+          </html>
+        EOF
 
     - name: Subir Pagina
-      uses: actions/upload-pages-artifact@v1
+      uses: actions/upload-pages-artifact@v3
       with:
         path: 'build'
     
@@ -118,17 +138,20 @@ jobs:
       id: deployment
       uses: actions/deploy-pages@v2
 
-    - name: Summary
+    - name: Display preview in workflow summary
       shell: bash
       run: |
-        cd build
-        ls
         PAGE_URL=${{ steps.deployment.outputs.page_url }}
         PAGE_URL=$(echo "$PAGE_URL" | sed -e 's/\/$//')
         cat << EOF >> $GITHUB_STEP_SUMMARY
         # 3D Viewer
-        [Open 3D Viewer](https://gds-viewer.tinytapeout.com/?model=$PAGE_URL/render.gds.gltf)
+        [open 3D viewer](https://gds-viewer.tinytapeout.com/?model=$PAGE_URL/tinytapeout.gds.gltf)
 
         # 2D Preview
-        ![2D Render PNG]($PAGE_URL/gds_render.png)
+        ![png]($PAGE_URL/gds_render.png)
         EOF
+    
+    - name: Check every folder
+      run: |
+        ls
+        ls build/
