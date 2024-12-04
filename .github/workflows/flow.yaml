@@ -13,11 +13,11 @@ jobs:
     - name: Check out repository
       uses: actions/checkout@v4
 
-    # Install packages for 'Render PNG from GDS' step and ghdl to process VHDL files:
+    # Install packages for 'Render PNG from GDS' step:
     - name: Install prerequisites
       uses: awalsh128/cache-apt-pkgs-action@latest
       with:
-        packages: librsvg2-bin pngquant ghdl-llvm cairosvg gdstk # librsvg2-bin for rsvg-convert; pngquant for heavy PNG compression.
+        packages: librsvg2-bin pngquant gdstk cairosvg # librsvg2-bin for rsvg-convert; pngquant for heavy PNG compression.
         version: test # I think naming a version builds a reusable packages cache for that name.
 
     - name: Use gds2png script
