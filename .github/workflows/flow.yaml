@@ -55,14 +55,6 @@ jobs:
     - name: Check out repository
       uses: actions/checkout@v4
     
-    - name: Check files
-      run: |
-        echo 'Main'
-        ls
-        echo "Build folder"
-        ls ./build/
-
-
     - name: GDS3D
       uses: actions/checkout@v4
       with:
@@ -82,6 +74,13 @@ jobs:
 #      uses: actions/download-artifact@v4
 #      with:
 #        name: gds_files
+
+    - name: Check files
+      run: |
+        echo 'Main'
+        ls
+        echo "Build folder"
+        ls ./build/
 
     - name: Rename GDS file
       run: |
