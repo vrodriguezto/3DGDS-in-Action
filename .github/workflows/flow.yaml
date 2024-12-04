@@ -1,0 +1,31 @@
+name: 'GDS 2D and 3D'
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  install-and-test:
+    runs-on: ubuntu-20.04  # Configuración para Ubuntu 20.04
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v4
+
+    # Install packages for 'Render PNG from GDS' step and ghdl to process VHDL files:
+    - name: Install prerequisites
+      uses: awalsh128/cache-apt-pkgs-action@latest
+      with:
+        packages: librsvg2-bin pngquant ghdl-llvm # librsvg2-bin for rsvg-convert; pngquant for heavy PNG compression.
+        version: tt10 # I think naming a version builds a reusable packages cache for that name.
+
+    - name: Use gds2png script
+      run: |
+        python3 gds2png.py
+
+    - name: Upload gds_render (png) artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: gds_render
+          path: 'gds_render.png'
