@@ -25,7 +25,7 @@ jobs:
         python3 gds2png.py
 
     - name: Upload gds_render (png) artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: gds_render
-          path: 'gds_render.png'
+      uses: actions/upload-artifact@v4
+      with:
+        name: gds_render
+        path: 'gds_render.png'
