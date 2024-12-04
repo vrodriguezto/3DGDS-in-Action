@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-import csv
 import glob
 import json
 import logging
