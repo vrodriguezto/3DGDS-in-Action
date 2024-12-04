@@ -101,13 +101,13 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: gds_render_png
-        path: './build/gds_render.png'
+        path: 'build/gds_render.png'
 
     - name: Download gds_render (gtlf) artifact
       uses: actions/download-artifact@v4
       with:
         name: gds_render_gtlf
-        path: './build/render.gds.gltf'
+        path: 'build/render.gds.gltf'
 
     - name: Generate HTML pages that redirects to viewer
       shell: bash
@@ -128,15 +128,20 @@ jobs:
           </body>
           </html>
         EOF
+    
+    - name: Check every folder
+      run: |
+        ls
+        ls build/
 
     - name: Subir Pagina
       uses: actions/upload-pages-artifact@v3
       with:
         path: 'build'
     
-    - name: Compartir con Github-Pages
+    - name: Deploy to GitHub Pages
       id: deployment
-      uses: actions/deploy-pages@v2
+      uses: actions/deploy-pages@v4
 
     - name: Display preview in workflow summary
       shell: bash
@@ -150,8 +155,3 @@ jobs:
         # 2D Preview
         ![png]($PAGE_URL/gds_render.png)
         EOF
-    
-    - name: Check every folder
-      run: |
-        ls
-        ls build/
