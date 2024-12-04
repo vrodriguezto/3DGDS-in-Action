@@ -92,13 +92,13 @@ jobs:
       run: mkdir -p gh-pages
 
     - name: Upload gds_render (png) artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: gds_render_png
-          path: './gh-pages/gds_render.png'
+      uses: actions/upload-artifact@v3
+      with:
+        name: gds_render_png
+        path: './gh-pages/gds_render.png'
 
     - name: Upload gds_render (png) artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: gds_render_gtlf
-          path: './gh-pages/gds_render.png'
+      uses: actions/upload-artifact@v3
+      with:
+        name: gds_render_gtlf
+        path: './gh-pages/gds_render.png'
