@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  GDS2Graphic:
+  GDS2Graphics:
     runs-on: ubuntu-20.04  # Configuración para Ubuntu 20.04
 
     steps:
@@ -58,7 +58,7 @@ jobs:
 
     - name: Rename GDS file
       run: |
-        GDS_FILE=$(ls gds/*.gds | head -n 1) # Encuentra el primer archivo .gds
+        GDS_FILE=$(ls ./gds/*.gds | head -n 1) # Encuentra el primer archivo .gds
         if [ -z "$GDS_FILE" ]; then
           echo "Error: No GDS file found in the gds/ directory."
           exit 1
