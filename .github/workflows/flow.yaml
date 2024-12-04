@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  GDS2PNG:
+  GDS2Graphic:
     runs-on: ubuntu-20.04  # Configuración para Ubuntu 20.04
 
     steps:
@@ -35,12 +35,8 @@ jobs:
       with:
         name: gds_render_png
         path: 'gds_render.png'
-  
-  GDS2gTLF:
-    runs-on: ubuntu-20.04  # Configuración para Ubuntu 20.04
-    needs: GDS2PNG
 
-    steps:
+#GDS to GTLF Process
 
     - name: GDS3D
       uses: actions/checkout@v4
@@ -59,12 +55,6 @@ jobs:
 
     - name: Create gh-pages directory
       run: mkdir -p gh-pages
-
-    - name: Download gds_render artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: gds_render_png
-        path: 'gh-pages/gds_render.png'
 
     - name: Rename GDS file
       run: |
