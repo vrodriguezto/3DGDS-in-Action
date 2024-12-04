@@ -26,6 +26,11 @@ jobs:
         python3 -m pip install --upgrade pip
         python3 -m pip install gdstk
 
+    - name: Copy GDS
+      run: |
+        mkdir gds
+        cp *.gds ${{ github.workspace }}/gds/
+
     - name: Use gds2png script
       run: |
         python3 gds2png.py
