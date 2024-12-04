@@ -80,11 +80,11 @@ jobs:
           echo "Error: No GDS file found in the gds/ directory."
           exit 1
         fi
-        cp "$GDS_FILE" gds/render.gds
+        cp "$GDS_FILE" render.gds
 
     - name: Convert GDS to GLTF
       run: |
-        python3 gds2gltf.py gds/render.gds
+        python3 gds2gltf.py render.gds
 
     - name: Upload gds_render (gtlf) artifact
       uses: actions/upload-artifact@v4
