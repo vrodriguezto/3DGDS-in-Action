@@ -110,7 +110,7 @@ jobs:
         path: './build/render.gds.gltf'
 
     - name: Subir Pagina
-      uses: actions/upload-pages-artifact@v1
+      uses: actions/upload-pages-artifact@v4
       with:
         path: 'build'
     
@@ -125,8 +125,8 @@ jobs:
         PAGE_URL=$(echo "$PAGE_URL" | sed -e 's/\/$//')
         cat << EOF >> $GITHUB_STEP_SUMMARY
         # 3D Viewer
-        [open 3D viewer](https://gds-viewer.tinytapeout.com/?model=$PAGE_URL/tinytapeout.gds.gltf)
+        [Open 3D Viewer](https://gds-viewer.tinytapeout.com/?model=$PAGE_URL/render.gds.gltf)
 
         # 2D Preview
-        ![png]($PAGE_URL/gds_render.png)
+        ![2D Render PNG]($PAGE_URL/gds_render.png)
         EOF
