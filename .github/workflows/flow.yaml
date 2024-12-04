@@ -8,7 +8,6 @@ on:
 jobs:
   GDS2PNG:
     runs-on: ubuntu-20.04  # Configuración para Ubuntu 20.04
-    needs: GDS2PNG
 
     steps:
 
@@ -39,6 +38,7 @@ jobs:
   
   GDS2gTLF:
     runs-on: ubuntu-20.04  # Configuración para Ubuntu 20.04
+    needs: GDS2PNG
 
     steps:
 
