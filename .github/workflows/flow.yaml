@@ -110,7 +110,7 @@ jobs:
         path: './build/render.gds.gltf'
 
     - name: Subir Pagina
-      uses: actions/upload-pages-artifact@v4
+      uses: actions/upload-pages-artifact@v1
       with:
         path: 'build'
     
