@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  GDS2Graphics:
+  GDS2PNG:
     runs-on: ubuntu-20.04  # Configuración para Ubuntu 20.04
 
     steps:
@@ -36,7 +36,11 @@ jobs:
         name: gds_render_png
         path: 'gds_render.png'
 
-#GDS to GTLF Process
+  GDS2gTLF:
+    runs-on: ubuntu-20.04  # Configuración para Ubuntu 20.04
+    needs: GDS2PNG
+
+    steps:
 
     - name: GDS3D
       uses: actions/checkout@v4
@@ -47,18 +51,21 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: '3.10'
-        cache: 'pip' # caching pip dependencies
+        cache: 'pip'
 
     - name: Install Python dependencies
       run: |
         python -m pip install numpy gdspy triangle pygltflib
 
-    - name: Create gh-pages directory
-      run: mkdir -p gh-pages
+    - name: List repository structure
+      run: |
+        echo "Current directory: $(pwd)"
+        ls -R ${{ github.workspace }}
+        ls ${{ github.workspace }}/gds
 
     - name: Rename GDS file
       run: |
-        GDS_FILE=$(ls ./gds/*.gds | head -n 1) # Encuentra el primer archivo .gds
+        GDS_FILE=$(ls ${{ github.workspace }}/gds/*.gds | head -n 1) 
         if [ -z "$GDS_FILE" ]; then
           echo "Error: No GDS file found in the gds/ directory."
           exit 1
@@ -69,14 +76,29 @@ jobs:
       run: |
         python3 gds2gltf.py gds/render.gds
 
-    - name: Move GLTF output
-      run: cp render.gds.gltf gh-pages/render.gds.gltf
-
     - name: Upload gds_render (gtlf) artifact
       uses: actions/upload-artifact@v4
       with:
         name: gds_render_gtlf
         path: 'render.gds.gltf'
 
+  GithubSite:
+    runs-on: ubuntu-20.04  # Configuración para Ubuntu 20.04
+    needs: GDS2gTLF
 
-      
+    steps: 
+
+    - name: Create gh-pages directory
+      run: mkdir -p gh-pages
+
+    - name: Upload gds_render (png) artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: gds_render_png
+          path: './gh-pages/gds_render.png'
+
+    - name: Upload gds_render (png) artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: gds_render_gtlf
+          path: './gh-pages/gds_render.png'
