@@ -105,13 +105,13 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: gds_png
-        path: './gh-pages/gds_render.png'
+        path: './gh-pages'
 
     - name: Download gds_render (gtlf) artifact
       uses: actions/download-artifact@v4
       with:
         name: gds_gtlf
-        path: './gh-pages/render.gds.gltf'
+        path: './gh-pages'
 
     - name: Verificar los archivos descargados
       run: |
