@@ -97,26 +97,32 @@ jobs:
     - name: Check out repository
       uses: actions/checkout@v4
 
+    - name: Create gh-pages directory
+      run: |
+        mkdir -p ./gh-pages
+
     - name: Download gds_render (png) artifact
       uses: actions/download-artifact@v4
       with:
         name: gds_render_png
-        path: './gds_render.png'
+        path: './gh-pages/gds_render.png'
 
     - name: Download gds_render (gtlf) artifact
       uses: actions/download-artifact@v4
       with:
         name: gds_render_gtlf
-        path: './render.gds.gltf'
+        path: './gh-pages/render.gds.gltf'
 
     - name: Verificar los archivos descargados
       run: |
         ls -l ./
+        echo "Carpeta especial"
+        ls -l ./gh-pages/
     
     - name: Generate HTML pages that redirects to viewer
       shell: bash
       run: |
-        cat << EOF >> index.html
+        cat << EOF >> gh-pages/index.html
           <!DOCTYPE html>
           <html lang="en">
           <head>
