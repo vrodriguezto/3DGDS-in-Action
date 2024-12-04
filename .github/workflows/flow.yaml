@@ -90,12 +90,12 @@ jobs:
           echo "Error: No GDS file found in the gds/ directory."
           exit 1
         fi
-        cp "$GDS_FILE" render.gds
+        cp "$GDS_FILE" ./GDS2glTF_repo/render.gds
 
     - name: Convert GDS to GLTF
       run: |
         cd GDS2glTF_repo
-        python3 gds2gltf.py ${{ github.workspace }}/build/render.gds
+        python3 gds2gltf.py render.gds
 
     - name: Check files
       run: |
@@ -103,7 +103,6 @@ jobs:
         ls
         echo ">> GDS2glTF_repo folder"
         ls GDS2glTF_repo
-
 
     - name: Upload gds_render (gtlf) artifact
       uses: actions/upload-artifact@v4
