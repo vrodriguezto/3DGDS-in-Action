@@ -39,10 +39,14 @@ jobs:
       run: |
         python3 gds2png.py
 
+    - name: Verificar archivo antes de subir
+      run: |
+        ls -l
+
     - name: Upload gds_render (png) artifact
       uses: actions/upload-artifact@v4
       with:
-        name: gds_render_png
+        name: gds_png
         path: 'gds_render.png'
 
   GDS2gTLF:
@@ -83,10 +87,14 @@ jobs:
         cd GDS2glTF_repo
         python3 gds2gltf.py render.gds
 
+    - name: Verificar archivo antes de subir
+      run: |
+        ls -l 'GDS2glTF_repo/render.gds.gltf'
+
     - name: Upload gds_render (gtlf) artifact
       uses: actions/upload-artifact@v4
       with:
-        name: gds_render_gtlf
+        name: gds_gtlf
         path: 'GDS2glTF_repo/render.gds.gltf'
 
   GithubSite:
@@ -104,13 +112,13 @@ jobs:
     - name: Download gds_render (png) artifact
       uses: actions/download-artifact@v4
       with:
-        name: gds_render_png
+        name: gds_png
         path: './gh-pages/gds_render.png'
 
     - name: Download gds_render (gtlf) artifact
       uses: actions/download-artifact@v4
       with:
-        name: gds_render_gtlf
+        name: gds_gtlf
         path: './gh-pages/render.gds.gltf'
 
     - name: Verificar los archivos descargados
@@ -151,6 +159,8 @@ jobs:
     - name: Verificar los archivos descargados
       run: |
         ls -l ./
+        echo "Carpeta especial"
+        ls -l ./gh-pages/
 
     - name: Display preview in workflow summary
       shell: bash
@@ -162,5 +172,5 @@ jobs:
         [open 3D viewer](https://gds-viewer.tinytapeout.com/?model=$PAGE_URL/tinytapeout.gds.gltf)
 
         # 2D Preview
-        ![png](./gds_render.png)
+        ![png]($PAGE_URL/gds_render.png)
         EOF
