@@ -97,6 +97,22 @@ jobs:
     - name: Check out repository
       uses: actions/checkout@v4
 
+    - name: Download gds_render (png) artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: gds_render_png
+        path: './build/gds_render.png'
+
+    - name: Download gds_render (gtlf) artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: gds_render_gtlf
+        path: './build/render.gds.gltf'
+
+    - name: Verificar los archivos descargados
+      run: |
+        ls -l ./build/
+    
     - name: Generate HTML pages that redirects to viewer
       shell: bash
       run: |
@@ -117,26 +133,6 @@ jobs:
           </html>
         EOF
 
-    - name: Download gds_render (png) artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: gds_render_png
-        path: 'gds_render.png'
-
-    - name: Download gds_render (gtlf) artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: gds_render_gtlf
-        path: 'render.gds.gltf'
-    
-    - name: Move files to root
-      run: |
-        cp gds_render.png build/
-        cp render.gds.gltf build/
-        echo "LS donde TOCA"
-        ls build
-        echo "END LS"
-
     - name: Subir Pagina
       uses: actions/upload-pages-artifact@v3
       with:
@@ -145,6 +141,10 @@ jobs:
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v4
+
+    - name: Verificar los archivos descargados
+      run: |
+        ls -l ./build/
 
     - name: Display preview in workflow summary
       shell: bash
