@@ -113,12 +113,6 @@ jobs:
         name: gds_gtlf
         path: './gh-pages'
 
-    - name: Verificar los archivos descargados
-      run: |
-        ls -l ./
-        echo "Carpeta especial"
-        ls -lR ./gh-pages/
-    
     - name: Generate HTML pages that redirects to viewer
       shell: bash
       run: |
