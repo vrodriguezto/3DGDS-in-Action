@@ -121,21 +121,21 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: gds_render_png
-        path: './build/gds_render.png'
+        path: 'gds_render.png'
 
     - name: Download gds_render (gtlf) artifact
       uses: actions/download-artifact@v4
       with:
         name: gds_render_gtlf
-        path: './build/render.gds.gltf'
+        path: 'render.gds.gltf'
     
     - name: Move files to root
       run: |
+        cp gds_render.png build/
+        cp render.gds.gltf build/
         echo "LS donde TOCA"
         ls build
         echo "END LS"
-        cp build/gds_render.png .  
-        cp build/render.gds.gltf . 
 
     - name: Subir Pagina
       uses: actions/upload-pages-artifact@v3
