@@ -155,7 +155,7 @@ jobs:
         PAGE_URL=$(echo "$PAGE_URL" | sed -e 's/\/$//')
         cat << EOF >> $GITHUB_STEP_SUMMARY
         # 3D Viewer
-        [open 3D viewer](https://gds-viewer.tinytapeout.com/?model=$PAGE_URL/tinytapeout.gds.gltf)
+        [open 3D viewer](https://gds-viewer.tinytapeout.com/?model=$PAGE_URL/render.gds.gltf)
 
         # 2D Preview
         ![png]($PAGE_URL/gds_render.png)
