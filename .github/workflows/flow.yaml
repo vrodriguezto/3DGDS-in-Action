@@ -121,6 +121,7 @@ jobs:
     - name: Summary
       shell: bash
       run: |
+        cd build
         PAGE_URL=${{ steps.deployment.outputs.page_url }}
         PAGE_URL=$(echo "$PAGE_URL" | sed -e 's/\/$//')
         cat << EOF >> $GITHUB_STEP_SUMMARY
