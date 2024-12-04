@@ -17,8 +17,13 @@ jobs:
     - name: Install prerequisites
       uses: awalsh128/cache-apt-pkgs-action@latest
       with:
-        packages: librsvg2-bin pngquant gdstk cairosvg # librsvg2-bin for rsvg-convert; pngquant for heavy PNG compression.
+        packages: librsvg2-bin pngquant cairosvg
         version: test # I think naming a version builds a reusable packages cache for that name.
+
+    - name: Install Python dependencies
+      run: |
+        python3 -m pip install --upgrade pip
+        python3 -m pip install gdstk
 
     - name: Use gds2png script
       run: |
