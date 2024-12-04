@@ -101,13 +101,13 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: gds_render_png
-        path: './build/gds_render.png'
+        path: 'gds_render.png'
 
     - name: Download gds_render (gtlf) artifact
       uses: actions/download-artifact@v4
       with:
         name: gds_render_gtlf
-        path: './build/render.gds.gltf'
+        path: 'render.gds.gltf'
 
     - name: Subir Pagina
       uses: actions/upload-pages-artifact@v1
@@ -122,6 +122,7 @@ jobs:
       shell: bash
       run: |
         cd build
+        ls
         PAGE_URL=${{ steps.deployment.outputs.page_url }}
         PAGE_URL=$(echo "$PAGE_URL" | sed -e 's/\/$//')
         cat << EOF >> $GITHUB_STEP_SUMMARY
