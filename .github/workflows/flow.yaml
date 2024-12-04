@@ -8,8 +8,10 @@ on:
 jobs:
   GDS2PNG:
     runs-on: ubuntu-20.04  # Configuración para Ubuntu 20.04
+    needs: GDS2PNG
 
     steps:
+
     - name: Check out repository
       uses: actions/checkout@v4
 
@@ -18,7 +20,7 @@ jobs:
       uses: awalsh128/cache-apt-pkgs-action@latest
       with:
         packages: librsvg2-bin pngquant cairosvg
-        version: test # I think naming a version builds a reusable packages cache for that name.
+        version: test
 
     - name: Install Python dependencies
       run: |
@@ -32,7 +34,7 @@ jobs:
     - name: Upload gds_render (png) artifact
       uses: actions/upload-artifact@v4
       with:
-        name: gds_render
+        name: gds_render_png
         path: 'gds_render.png'
   
   GDS2gTLF:
@@ -61,14 +63,17 @@ jobs:
     - name: Download gds_render artifact
       uses: actions/download-artifact@v4
       with:
-        name: gds_render
+        name: gds_render_png
         path: 'gh-pages/gds_render.png'
 
     - name: Rename GDS file
       run: |
-        echo 'Revisar si se copió'
-        ls gh-pages/
-        mv gds/*.gds render.gds
+        GDS_FILE=$(ls gds/*.gds | head -n 1) # Encuentra el primer archivo .gds
+        if [ -z "$GDS_FILE" ]; then
+          echo "Error: No GDS file found in the gds/ directory."
+          exit 1
+        fi
+        cp "$GDS_FILE" gds/render.gds
 
     - name: Convert GDS to GLTF
       run: |
@@ -76,6 +81,12 @@ jobs:
 
     - name: Move GLTF output
       run: cp render.gds.gltf gh-pages/render.gds.gltf
+
+    - name: Upload gds_render (gtlf) artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: gds_render_gtlf
+        path: 'render.gds.gltf'
 
 
       
