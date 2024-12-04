@@ -33,7 +33,7 @@ jobs:
     - name: Copy GDS
       run: |
         mkdir gds
-        cp build/*.gds gds/
+        cp *.gds gds/
 
     - name: Use gds2png script
       run: |
@@ -71,7 +71,7 @@ jobs:
 
     - name: Rename GDS file
       run: |
-        GDS_FILE=$(ls ./build/*.gds | head -n 1) 
+        GDS_FILE=$(ls ./*.gds | head -n 1) 
         if [ -z "$GDS_FILE" ]; then
           echo "Error: No GDS file found in the gds/ directory."
           exit 1
@@ -101,22 +101,22 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: gds_render_png
-        path: './build/gds_render.png'
+        path: './gds_render.png'
 
     - name: Download gds_render (gtlf) artifact
       uses: actions/download-artifact@v4
       with:
         name: gds_render_gtlf
-        path: './build/render.gds.gltf'
+        path: './render.gds.gltf'
 
     - name: Verificar los archivos descargados
       run: |
-        ls -l ./build/
+        ls -l ./
     
     - name: Generate HTML pages that redirects to viewer
       shell: bash
       run: |
-        cat << EOF >> build/index.html
+        cat << EOF >> index.html
           <!DOCTYPE html>
           <html lang="en">
           <head>
@@ -144,7 +144,7 @@ jobs:
 
     - name: Verificar los archivos descargados
       run: |
-        ls -l ./build/
+        ls -l ./
 
     - name: Display preview in workflow summary
       shell: bash
