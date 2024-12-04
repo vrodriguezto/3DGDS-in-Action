@@ -131,8 +131,8 @@ jobs:
     
     - name: Move files to root
       run: |
-        cp ./build/gds_render.png .  
-        cp ./build/render.gds.gltf . 
+        cp build/gds_render.png .  
+        cp build/render.gds.gltf . 
 
     - name: Subir Pagina
       uses: actions/upload-pages-artifact@v3
