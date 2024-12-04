@@ -129,10 +129,10 @@ jobs:
           </html>
         EOF
     
-    - name: Check every folder
+    - name: Move files to root
       run: |
-        ls
-        ls build/
+        cp ./build/gds_render.png .  
+        cp ./build/render.gds.gltf . 
 
     - name: Subir Pagina
       uses: actions/upload-pages-artifact@v3
