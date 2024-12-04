@@ -142,7 +142,7 @@ jobs:
     - name: Subir Pagina
       uses: actions/upload-pages-artifact@v3
       with:
-        path: 'build'
+        path: 'gh-pages'
     
     - name: Deploy to GitHub Pages
       id: deployment
