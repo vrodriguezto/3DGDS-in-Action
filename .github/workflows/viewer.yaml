@@ -11,34 +11,38 @@ permissions:
 
 jobs:
   GDS2PNG:
-    runs-on: ubuntu-20.04  # Configuración para Ubuntu 20.04
+    runs-on: ubuntu-20.04  # Run the job on an Ubuntu 20.04 environment
 
     steps:
 
     - name: Check out repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v4  # Checkout the repository code
 
-    # Install packages for 'Render PNG from GDS' step:
+    # Install packages needed for rendering PNG files from GDS
     - name: Install prerequisites
       uses: awalsh128/cache-apt-pkgs-action@latest
       with:
         packages: librsvg2-bin pngquant cairosvg
         version: test
 
+    # Install Python dependencies for GDS-to-PNG conversion
     - name: Install Python dependencies
       run: |
         python3 -m pip install --upgrade pip
         python3 -m pip install gdstk
 
+    # Copy GDS files to a working directory
     - name: Copy GDS
       run: |
         mkdir gds
         cp *.gds gds/
 
+    # Run a custom Python script to convert GDS files to PNG
     - name: Use gds2png script
       run: |
         python3 gds2png.py
 
+    # Upload the generated PNG file as an artifact
     - name: Upload gds_render (png) artifact
       uses: actions/upload-artifact@v4
       with:
@@ -46,29 +50,33 @@ jobs:
         path: 'gds_render.png'
 
   GDS2gTLF:
-    runs-on: ubuntu-20.04  # Configuración para Ubuntu 20.04
-    needs: GDS2PNG
+    runs-on: ubuntu-20.04  # Run the job on an Ubuntu 20.04 environment
+    needs: GDS2PNG  # This job depends on the successful completion of GDS2PNG
 
     steps:
     - name: Check out repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v4  # Checkout the repository code
 
+    # Clone the GDS2glTF repository for GDS-to-glTF conversion
     - name: GDS3D
       uses: actions/checkout@v4
       with:
         repository: mbalestrini/GDS2glTF
         path: GDS2glTF_repo
 
+    # Set up a specific Python version for the glTF conversion
     - name: Python version
       uses: actions/setup-python@v4
       with:
         python-version: '3.10'
         cache: 'pip'
 
+    # Install Python dependencies for GDS-to-glTF conversion
     - name: Install Python dependencies
       run: |
         python -m pip install numpy gdspy triangle pygltflib
 
+    # Rename the GDS file to match the expected input for the GDS2glTF tool
     - name: Rename GDS file
       run: |
         GDS_FILE=$(ls ./*.gds | head -n 1) 
@@ -78,11 +86,13 @@ jobs:
         fi
         cp "$GDS_FILE" ./GDS2glTF_repo/render.gds
 
+    # Convert the renamed GDS file to a glTF file
     - name: Convert GDS to GLTF
       run: |
         cd GDS2glTF_repo
         python3 gds2gltf.py render.gds
 
+    # Upload the generated glTF file as an artifact
     - name: Upload gds_render (gtlf) artifact
       uses: actions/upload-artifact@v4
       with:
@@ -90,29 +100,33 @@ jobs:
         path: 'GDS2glTF_repo/render.gds.gltf'
 
   GithubSite:
-    runs-on: ubuntu-20.04  # Configuración para Ubuntu 20.04
-    needs: GDS2gTLF
+    runs-on: ubuntu-20.04  # Run the job on an Ubuntu 20.04 environment
+    needs: GDS2gTLF  # This job depends on the successful completion of GDS2gTLF
 
     steps: 
     - name: Check out repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v4  # Checkout the repository code
 
+    # Create a directory for the GitHub Pages deployment
     - name: Create gh-pages directory
       run: |
         mkdir -p ./gh-pages
 
+    # Download the PNG artifact generated in GDS2PNG
     - name: Download gds_render (png) artifact
       uses: actions/download-artifact@v4
       with:
         name: gds_png
         path: './gh-pages'
 
+    # Download the glTF artifact generated in GDS2gTLF
     - name: Download gds_render (gtlf) artifact
       uses: actions/download-artifact@v4
       with:
         name: gds_gtlf
         path: './gh-pages'
 
+    # Generate an HTML page that redirects to the 3D viewer
     - name: Generate HTML pages that redirects to viewer
       shell: bash
       run: |
@@ -133,15 +147,18 @@ jobs:
           </html>
         EOF
 
-    - name: Subir Pagina
+    # Upload the HTML and other assets to GitHub Pages
+    - name: Upload page files for GitHub Pages
       uses: actions/upload-pages-artifact@v3
       with:
         path: 'gh-pages'
     
+    # Deploy the generated content to GitHub Pages
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v4
 
+    # Display a summary in the workflow logs with preview links
     - name: Display preview in workflow summary
       shell: bash
       run: |
