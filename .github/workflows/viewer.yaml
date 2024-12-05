@@ -1,9 +1,7 @@
 name: 'GDS 2D and 3D'
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch: # Trigger manually
     
 permissions:
   pages: write
